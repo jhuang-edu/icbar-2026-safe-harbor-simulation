@@ -145,6 +145,14 @@ python benchmark_uci_diabetes.py
 <a name="faq"></a>
 ## 💡 Technical FAQ & Paper Clarifications / 常见技术问答与论文补充注记
 
+> **Context & Versioning Note / 版本与上下文定位说明**：
+> - **Current Scope (For v1.2.0 Submission)**: The following clarifications and empirical notes specifically address the submitted manuscript and the accompanying code release **v1.2.0** (the version submitted to EICA for review). They provide necessary statistical grounding, metric interpretations, and methodological context without altering the submitted text.
+> - **Prospective Scope (Upon Review & Revision)**: If the conference review process permits formal manuscript revision (Camera-Ready / Post-Review Rebuttal), these clarifications will be formally merged and reconciled into the revised paper text and tables, corresponding to the prospective **v1.3.0** publication milestone.
+> 
+> **中文说明**：
+> - **当前阶段（针对已提交的 v1.2.0 版论文与代码）**：本技术问答与注记专门针对已提交至 EICA 评审的论文原稿及配套的 **v1.2.0** 开源版本。在不变更已提交原稿的前提下，为审稿人与同行学者提供详尽的统计学原理解释、表格指标界定与实验背景。
+> - **后续阶段（若获准返修/终版录用）**：若会议发出修改与返修通知（Rebuttal / Camera-Ready），届时正文表头与相关讨论将正式吸收本部分内容，论文原稿与开源工程将同步升级并统一锚定至 **v1.3.0**。
+
 This section provides explicit answers and empirical explanations regarding theoretical formulations, table interpretations, and statistical properties evaluated in the paper and benchmark suite.
 
 本章节针对论文审稿、同行评议及学术复现过程中关注的理论公式、表格指标与统计学现象，提供详尽的中英双语技术说明。
