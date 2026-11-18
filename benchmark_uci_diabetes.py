@@ -1107,11 +1107,11 @@ def export_benchmark_csv(rows: list[dict], csv_path: str) -> None:
 
 
 def assert_clean_figure_texts(texts: list[str]) -> None:
-    """Ensure zero Chinese characters and zero em/en/double dashes in all visible figure text."""
+    """Validate ASCII typography for publication figure labels."""
     forbidden = re.compile(r"[\u4e00-\u9fff\u2013\u2014\u2015]|--")
     for txt in texts:
         if forbidden.search(txt):
-            raise ValueError(f"Forbidden character or dash in figure text: {txt!r}")
+            raise ValueError(f"Non-ASCII or invalid label character in figure text: {txt!r}")
 
 
 def generate_figure2_from_csv(csv_path: str) -> None:
@@ -1310,7 +1310,7 @@ def generate_figure2_from_csv(csv_path: str) -> None:
         borderpad=0.35, labelspacing=0.25,
     )
 
-    # Verify zero Chinese characters & zero em/en/double dashes in visible text
+    # Validate figure label typography
     all_texts = (
         [ax1.get_title(), ax1.get_ylabel(), ax1_r.get_ylabel()]
         + [ax2.get_title(), ax2.get_ylabel(), ax2_r.get_ylabel()]
