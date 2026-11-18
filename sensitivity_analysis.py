@@ -123,7 +123,7 @@ def run_grid_sensitivity(config: SimulationConfig):
 
         for k in config.k_vals:
             for a in config.alpha_vals:
-                for g in gamma_vals:
+                for g in config.gamma_vals:
                     r = calculate_risk(k, a, g)
                     min_k_met = meets_minimum_k(k, config.k_min_threshold)
                     numeric_pass = meets_risk_threshold(k, a, g, config.tau_safe)
@@ -231,22 +231,43 @@ def run_monte_carlo_simulation(config: SimulationConfig):
         print("Sampling gamma_org from NumPy Clipped Normal distribution [0.55, 0.95].")
 
     r_sim = (1.0 / k_sim) * alpha_sim * gamma_sim
-    pass_mask = [meets_risk_threshold(k_sim[i], alpha_sim[i], gamma_sim[i], config.tau_safe) for i in range(config.n_simulations)]
-    pass_rate = np.mean(pass_mask) * 100.0
+    risk_mask = [
+        meets_risk_threshold(k_sim[i], alpha_sim[i], gamma_sim[i], config.tau_safe)
+        for i in range(config.n_simulations)
+    ]
+    k_mask = [
+        meets_minimum_k(k_sim[i], config.k_min_threshold)
+        for i in range(config.n_simulations)
+    ]
+    dual_mask = [risk_mask[i] and k_mask[i] for i in range(config.n_simulations)]
+
+    risk_pass_rate = float(np.mean(risk_mask) * 100.0)
+    k_pass_rate = float(np.mean(k_mask) * 100.0)
+    pass_rate = float(np.mean(dual_mask) * 100.0)
 
     print(f"Mean R_res: {np.mean(r_sim)*100:.2f}% (Std: {np.std(r_sim)*100:.2f}%)")
     print(f"5th Percentile: {np.percentile(r_sim, 5)*100:.2f}% | 95th Percentile: {np.percentile(r_sim, 95)*100:.2f}%")
-    print(f"Empirical Compliance Rate (R_res <= {config.tau_safe:.2%}): {pass_rate:.2f}%")
+    print(f"Numeric Threshold Rate (R_res <= {config.tau_safe:.2%}): {risk_pass_rate:.2f}%")
+    print(f"Minimum Equivalence Class Rate (k_min >= {config.k_min_threshold}): {k_pass_rate:.2f}%")
+    print(
+        f"Empirical Safe Harbor Conjunctive Rate "
+        f"(k_min >= {config.k_min_threshold} AND R_res <= {config.tau_safe:.2%}): {pass_rate:.2f}%"
+    )
 
-    # Export Monte Carlo summary
+    # Export Monte Carlo summary (preserving existing 7 columns in place + appending conjunctive columns)
     mc_csv_path = os.path.join(DATA_DIR, "monte_carlo_results.csv")
     with open(mc_csv_path, mode="w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["sim_id", "k_min", "alpha_env", "gamma_org", "R_res", "meets_risk_threshold", "sampling_distribution"])
+        writer.writerow([
+            "sim_id", "k_min", "alpha_env", "gamma_org", "R_res",
+            "meets_risk_threshold", "sampling_distribution",
+            "meets_minimum_k", "passes_safe_harbor"
+        ])
         for idx in range(config.n_simulations):
             writer.writerow([
                 idx + 1, k_sim[idx], f"{alpha_sim[idx]:.4f}", f"{gamma_sim[idx]:.4f}",
-                f"{r_sim[idx]:.6f}", pass_mask[idx], config.distribution_type
+                f"{r_sim[idx]:.6f}", risk_mask[idx], config.distribution_type,
+                k_mask[idx], dual_mask[idx]
             ])
     print(f"Exported Monte Carlo draws -> {mc_csv_path}")
 
@@ -308,8 +329,6 @@ def generate_visualizations(r_sim, config: SimulationConfig):
 
 def main():
     config = SimulationConfig()
-    global gamma_vals
-    gamma_vals = config.gamma_vals
     run_grid_sensitivity(config)
     run_stress_testing(config)
     r_sim, pass_rate = run_monte_carlo_simulation(config)

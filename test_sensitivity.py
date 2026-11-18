@@ -10,8 +10,13 @@ Validates:
 
 import sys
 import os
+import csv
+import io
+import tempfile
 import unittest
+from contextlib import redirect_stdout
 from decimal import Decimal
+from unittest.mock import patch
 
 # Ensure open_repo is in sys.path
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -25,6 +30,8 @@ from sensitivity_analysis import (
     meets_minimum_k,
     evaluate_framework_requirements,
     calculate_critical_alpha,
+    run_grid_sensitivity,
+    run_monte_carlo_simulation,
 )
 
 
@@ -113,6 +120,63 @@ class TestSensitivityAnalysis(unittest.TestCase):
         alpha_crit = calculate_critical_alpha(10, 0.72, 0.04)
         r_at_crit = calculate_risk(10, alpha_crit, 0.72)
         self.assertAlmostEqual(r_at_crit, 0.04, places=6)
+
+    def test_direct_grid_sensitivity_import_without_name_error(self):
+        """Assertion 6: Calling run_grid_sensitivity directly on import must not raise NameError."""
+        with tempfile.TemporaryDirectory() as tmpdir, patch("sensitivity_analysis.DATA_DIR", tmpdir):
+            with redirect_stdout(io.StringIO()):
+                run_grid_sensitivity(SimulationConfig())
+            grid_csv = os.path.join(tmpdir, "sensitivity_grid.csv")
+            self.assertTrue(os.path.exists(grid_csv), "sensitivity_grid.csv must be generated.")
+            with open(grid_csv, mode="r", encoding="utf-8") as f:
+                rows = list(csv.DictReader(f))
+            self.assertEqual(len(rows), 315, "Exported sensitivity grid must contain exactly 315 rows.")
+
+    def test_monte_carlo_conjunctive_compliance_rate(self):
+        """Assertion 7: Monte Carlo conjunctive rate (k_min >= 10 AND R_res <= 4%) must equal 75.08%."""
+        with tempfile.TemporaryDirectory() as tmpdir, patch("sensitivity_analysis.DATA_DIR", tmpdir):
+            with redirect_stdout(io.StringIO()):
+                r_sim, pass_rate = run_monte_carlo_simulation(SimulationConfig())
+            self.assertEqual(len(r_sim), 10000)
+            self.assertAlmostEqual(pass_rate, 75.08, places=2, msg="Conjunctive safe harbor rate must be 75.08%.")
+
+            mc_csv = os.path.join(tmpdir, "monte_carlo_results.csv")
+            self.assertTrue(os.path.exists(mc_csv))
+            with open(mc_csv, mode="r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                required_cols = {
+                    "sim_id", "k_min", "alpha_env", "gamma_org", "R_res",
+                    "meets_risk_threshold", "sampling_distribution",
+                    "meets_minimum_k", "passes_safe_harbor",
+                }
+                self.assertTrue(required_cols.issubset(set(reader.fieldnames or [])))
+                rows = list(reader)
+
+            self.assertEqual(len(rows), 10000)
+            dual_count = sum(1 for row in rows if row["passes_safe_harbor"] == "True")
+            k_count = sum(1 for row in rows if row["meets_minimum_k"] == "True")
+            risk_count = sum(1 for row in rows if row["meets_risk_threshold"] == "True")
+            self.assertEqual(risk_count, 10000)
+            self.assertEqual(k_count, 7508)
+            self.assertEqual(dual_count, 7508)
+            for row in rows:
+                expected_k = int(row["k_min"]) >= 10
+                self.assertEqual(row["meets_minimum_k"] == "True", expected_k)
+                expected_dual = expected_k and (row["meets_risk_threshold"] == "True")
+                self.assertEqual(row["passes_safe_harbor"] == "True", expected_dual)
+
+    def test_persisted_monte_carlo_csv_matches_conjunctive_definition(self):
+        """Assertion 8: Checked-in data/monte_carlo_results.csv must include conjunctive columns with 75.08% pass rate."""
+        mc_csv = os.path.join(BASE_DIR, "data", "monte_carlo_results.csv")
+        self.assertTrue(os.path.exists(mc_csv), "Persisted monte_carlo_results.csv must exist.")
+        with open(mc_csv, mode="r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            self.assertIn("meets_minimum_k", reader.fieldnames or [])
+            self.assertIn("passes_safe_harbor", reader.fieldnames or [])
+            rows = list(reader)
+        self.assertEqual(len(rows), 10000)
+        dual_count = sum(1 for row in rows if row["passes_safe_harbor"] == "True")
+        self.assertEqual(dual_count, 7508, "Persisted Monte Carlo CSV must record 7508 / 10000 (75.08%) conjunctive passes.")
 
 
 if __name__ == "__main__":

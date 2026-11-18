@@ -1,8 +1,8 @@
 # Complete Reference & Regulatory Framework
 
-This repository provides the full, annotated bibliography of the 22 core regulatory statutes, judicial precedents, technical standards, and foundational academic literature referenced in the study:
+This repository provides the full, annotated bibliography of the 25 core regulatory statutes, judicial precedents, technical standards, and foundational academic literature referenced in the study, along with the primary clinical benchmark dataset citation:
 
-> **Paper**: *Scenario-Risk Safe Harbor for Secondary Health Data Governance and AI Training under China's Personal Information Protection Law*  
+> **Paper**: *A Computational Scenario-Risk Safe Harbor for Privacy-Preserving Health Data Governance and AI Training under China's Personal Information Protection Law*  
 > **Status**: Under Revision (Target Venue: ICBAR 2026, proceedings scheduled with IOS Press *FAIA*)
 
 All items are categorized by domain with active persistent identifiers (DOIs, official government gazettes, and official judicial bulletins) for seamless independent auditing and reproducibility.
@@ -41,7 +41,7 @@ All items are categorized by domain with active persistent identifiers (DOIs, of
 - **Official Source**: [EUR-Lex Official Legislation](https://eur-lex.europa.eu/eli/reg/2025/327/oj)
 
 ### `[14]` United States HIPAA Privacy Rule
-- **Citation**: U.S. Department of Health and Human Services (HHS). *Standards for Privacy of Individually Identifiable Health Information*, *Code of Federal Regulations* 45 C.F.R. §§ 164.512(i)(2)(ii), 164.514(b).
+- **Citation**: U.S. Department of Health and Human Services (HHS) (2013). *Modifications to the HIPAA Privacy, Security, Enforcement, and Breach Notification Rules under the HITECH Act and the Genetic Information Nondiscrimination Act; Standards for Privacy of Individually Identifiable Health Information*, *Code of Federal Regulations* 45 C.F.R. §§ 164.512(i)(2)(ii), 164.514(b) (Omnibus Final Rule, 78 Fed. Reg. 5566, January 25, 2013).
 - **Comparative Role**: Provides foundational comparative models for the 18-category Safe Harbor de-identification and statistical Expert Determination standards.
 - **Official Source**: [Electronic Code of Federal Regulations (eCFR)](https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-E)
 
@@ -63,6 +63,11 @@ All items are categorized by domain with active persistent identifiers (DOIs, of
 - **Citation**: Johnson, A.E.W., Bulgarelli, L., Shen, L., Gayles, A., Shammout, A., Horng, S., Pollard, T.J., Hao, S., Moody, B., Gow, B., Lehman, L.H., Celi, L.A., and Mark, R.G. (2023). MIMIC-IV, a freely accessible electronic health record dataset. *Scientific Data*, 10, 1.
 - **Technical Role**: Exemplary real-world clinical electronic health record database demonstrating international multi-stage de-identification and compliance protocols.
 - **DOI Link**: [https://doi.org/10.1038/s41597-022-01899-x](https://doi.org/10.1038/s41597-022-01899-x)
+
+### `[Dataset]` UCI Diabetes 130-US Hospitals Clinical Benchmark (ID=296)
+- **Citation**: Strack, B., DeShazo, J.P., Gennings, C., Olmo, J.L., Ventura, S., Cios, K.J., and Clore, J.N. (2014). Impact of HbA1c measurement on hospital readmission rates: Analysis of 70,000 clinical database patient records. *BioMed Research International*, 2014, 781670.
+- **Technical Role**: Open-access empirical EHR benchmark (101,766 encounters across 71,518 unique patients) used in `benchmark_uci_diabetes.py` to evaluate Mondrian $(k, l)$ generalization (E1) and DP-SGD utility/MIA defense (E2).
+- **DOI Link**: [https://doi.org/10.1155/2014/781670](https://doi.org/10.1155/2014/781670) | **Dataset DOI**: [https://doi.org/10.24432/C5230J](https://doi.org/10.24432/C5230J)
 
 ---
 
@@ -115,6 +120,21 @@ All items are categorized by domain with active persistent identifiers (DOIs, of
 - **Citation**: Abadi, M., Chu, A., Goodfellow, I., McMahan, H.B., Mironov, I., Talwar, K., and Zhang, L. (2016). Deep learning with differential privacy. In: *Proc. ACM SIGSAC Conf. on Computer and Communications Security (CCS)*, pp. 308–318.
 - **Technical Role**: Underpins Safe Harbor Element 2 (controlled sandbox with DP-SGD gradient perturbation: $\varepsilon \le 2.0, \delta = 10^{-5}$).
 - **DOI Link**: [https://doi.org/10.1145/2976749.2978318](https://doi.org/10.1145/2976749.2978318)
+
+### `[23]` Mondrian Multidimensional K-Anonymity (Supplemental Privacy Engineering Literature)
+- **Citation**: LeFevre, K., DeWitt, D.J., and Ramakrishnan, R. (2006). Mondrian multidimensional K-anonymity. In: *Proc. 22nd International Conference on Data Engineering (ICDE)*, IEEE, Atlanta, GA, pp. 25–35.
+- **Technical Role**: Provides the top-down multidimensional kd-tree generalization algorithm used in Experiment E1 (`benchmark_uci_diabetes.py`) to construct quasi-identifier equivalence classes.
+- **DOI Link**: [https://doi.org/10.1109/ICDE.2006.101](https://doi.org/10.1109/ICDE.2006.101)
+
+### `[24]` l-Diversity Beyond k-Anonymity (Supplemental Privacy Engineering Literature)
+- **Citation**: Machanavajjhala, A., Kifer, D., Gehrke, J., and Venkitasubramaniam, M. (2007). l-diversity: Privacy beyond k-anonymity. *ACM Transactions on Knowledge Discovery from Data (TKDD)*, 1(1), Article 3.
+- **Technical Role**: Grounds the $l \ge 3$ distinct sensitive-diagnosis constraint integrated into Safe Harbor Element 1 and the Mondrian $(k, l)$ partitioning gate.
+- **DOI Link**: [https://doi.org/10.1145/1217299.1217302](https://doi.org/10.1145/1217299.1217302)
+
+### `[25]` Privacy Risk in Machine Learning & Membership Inference Attacks (Supplemental Privacy Engineering Literature)
+- **Citation**: Yeom, S., Giacomelli, I., Fredrikson, M., and Jha, S. (2018). Privacy risk in machine learning: Analyzing the connection to overfitting. In: *Proc. IEEE 31st Computer Security Foundations Symposium (CSF)*, IEEE, Oxford, UK, pp. 268–282.
+- **Technical Role**: Formalizes the loss-threshold membership inference attack (MIA) advantage metric ($\mathrm{TPR} - \mathrm{FPR}$) used in Experiment E2 to evaluate privacy leakage under varying $\varepsilon$.
+- **DOI Link**: [https://doi.org/10.1109/CSF.2018.00027](https://doi.org/10.1109/CSF.2018.00027)
 
 ---
 

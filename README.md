@@ -3,7 +3,7 @@
 # Scenario-Risk Safe Harbor Simulation & Sensitivity Analysis
 ### Open-Source Reproducibility Suite for Academic Research
 
-[![Release](https://img.shields.io/badge/Release-v1.1.0-blue.svg?style=flat-square)](https://github.com/jhuang-edu/icbar-2026-safe-harbor-simulation/releases/tag/v1.1.0)
+[![Release](https://img.shields.io/badge/Release-v1.2.0-blue.svg?style=flat-square)](#version-history)
 [![Target Venue](https://img.shields.io/badge/Target%20Venue-ICBAR%202026-1f6feb.svg?style=flat-square)](https://www.ais.cn/attendees/index/2ER6F3)
 [![Status](https://img.shields.io/badge/Status-Under%20Revision-success.svg?style=flat-square)](#)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg?style=flat-square)](https://www.python.org/)
@@ -30,7 +30,8 @@ This repository strictly adheres to reproducible research principles. Versions c
 | Version | Status | Key Characteristics & Methodology |
 |:---:|:---:|:---|
 | [**v1.0.0**](https://github.com/jhuang-edu/icbar-2026-safe-harbor-simulation/releases/tag/v1.0.0) | Archived Snapshot | **Official reproducible baseline snapshot for Paper v2 (submitted).** Matches all numerical and graphical results in the initial revision manuscript. |
-| [**v1.1.0**](https://github.com/jhuang-edu/icbar-2026-safe-harbor-simulation/releases/tag/v1.1.0) | Current Release | **Methodological hardening & decoupled criteria release:**<br>1. **IEEE 754 Precision Fix**: Implemented exact decimal evaluation for $\alpha \times \gamma \le \tau \times k$. In the 315-point grid, only **one single edge-case** (`k=5, alpha=0.20, gamma=1.00`) changes evaluation from `False` to `True` (exactly equals 4.00%).<br>2. **Decoupled Governance Evaluation**: Disentangled pure numeric threshold (`meets_risk_threshold`) from statutory triad criteria (`framework_requirements_status`). For example, $k=5$ yields $3.60\% \le 4.0\%$ (numeric pass), but fails statutory criteria because $k < 10$.<br>3. **Reproducible Stress Testing**: Introduced environmental degradation and organizational erosion stress scenarios with analytical safety margins $\alpha_{\mathrm{crit}} = \frac{\tau \cdot k}{\gamma}$.<br>4. **Statistical Rigor**: Explicitly documented sampling distribution as Clipped Normal with optional Truncated Normal support; updated visualizations to reflect research-defined thresholds. |
+| [**v1.1.0**](https://github.com/jhuang-edu/icbar-2026-safe-harbor-simulation/releases/tag/v1.1.0) | Archived Snapshot | **Methodological hardening & decoupled criteria release:**<br>1. **IEEE 754 Precision Fix**: Implemented exact decimal evaluation for $\alpha \times \gamma \le \tau \times k$. In the 315-point grid, only **one single edge-case** (`k=5, alpha=0.20, gamma=1.00`) changes evaluation from `False` to `True` (exactly equals 4.00%).<br>2. **Decoupled Governance Evaluation**: Disentangled pure numeric threshold (`meets_risk_threshold`) from statutory triad criteria (`framework_requirements_status`). For example, $k=5$ yields $3.60\% \le 4.0\%$ (numeric pass), but fails statutory criteria because $k < 10$.<br>3. **Reproducible Stress Testing**: Introduced environmental degradation and organizational erosion stress scenarios with analytical safety margins $\alpha_{\mathrm{crit}} = \frac{\tau \cdot k}{\gamma}$.<br>4. **Statistical Rigor**: Explicitly documented sampling distribution as Clipped Normal with optional Truncated Normal support; updated visualizations to reflect research-defined thresholds. |
+| **v1.2.0** | Current Release | **UCI Diabetes 130-US empirical benchmark & conjunctive Monte Carlo fix:**<br>1. **Conjunctive Monte Carlo Compliance**: Fixed `sensitivity_analysis.py` (`config.gamma_vals` scope & conjunctive $k_{\min} \ge 10 \land R_{\mathrm{res}} \le 0.04$ evaluation yielding `75.08%`, exported with `meets_minimum_k` and `passes_safe_harbor` columns).<br>2. **Retired Synthetic Diagram**: Removed the retired synthetic Figure 2 diagram and replaced it with empirical `figure2_uci_benchmark.png`.<br>3. **UCI 296 Empirical Benchmark (`benchmark_uci_diabetes.py`)**: Added end-to-end leakage-free 5-seed evaluation of E1 (6-QI Mondrian $(k, l)$-anonymity) and E2 (per-sample clipped DP-SGD with exact RDP accounting + Yeom loss-threshold MIA defense), generating `data/uci_diabetes_benchmark.csv`. |
 
 ---
 
@@ -38,7 +39,7 @@ This repository strictly adheres to reproducible research principles. Versions c
 ## English
 
 ### 1. Research Overview & Methodological Scope
-- **Paper Title**: *Scenario-Risk Safe Harbor for Secondary Health Data Governance and AI Training under China's Personal Information Protection Law*
+- **Paper Title**: *A Computational Scenario-Risk Safe Harbor for Privacy-Preserving Health Data Governance and AI Training under China's Personal Information Protection Law*
 - **Current Status**: Under Revision / Peer Review (Target Venue: ICBAR 2026, proceedings scheduled with IOS Press *FAIA*).
 - **Core Focus**: Addressing the operational challenges of sensitive personal data "separate consent" requirements under Articles 28 and 29 of China's PIPL for retrospective clinical research and medical AI training, proposing a three-element scenario-risk safe harbor framework.
 - **Methodological Scope & Scenario Assumptions**:
@@ -58,8 +59,22 @@ This repository strictly adheres to reproducible research principles. Versions c
 
 <br><br>
 
-#### Figure 2: Four-Phase Governance Evaluation & Dynamic Evolution
-<img src="figures/figure2_governance_evaluation.png" alt="Figure 2 Governance Evaluation" width="850"/>
+#### Figure 2: Empirical Evaluation on UCI Diabetes 130-US (Mondrian (k, l) Generalization & DP-SGD/MIA Defense)
+<img src="figures/figure2_uci_benchmark.png" alt="Figure 2 UCI Diabetes Empirical Benchmark" width="850"/>
+
+> *Automated Reproducibility Note*: Figure 2 is generated automatically by `benchmark_uci_diabetes.py` from `data/uci_diabetes_benchmark.csv` on the UCI Diabetes 130-US dataset (ID=296; 101,766 encounters across 71,518 unique patients, patient-grouped 80/20 splits over 5 seeds `42..46`). All quantitative metrics reported in the manuscript are parsed directly from `data/uci_diabetes_benchmark.csv` without manual transcription.
+
+| Experiment | Setting | $k_{\min}$ | $l_{\min}$ | $\mathrm{NCP}$ (mean $\pm$ std) | $R_{\mathrm{res}}$ | Test ROC-AUC | Local MIA Adv ($N=2,000$) | Safe Harbor Gate |
+|---|---|---:|---:|---:|---:|---:|---:|:---:|
+| E1 | `Raw` | 1 | 1 | 0.0000 | 18.00% | - | - | False |
+| E1 | `Mondrian_k5_l3` | 5 | 3 | 0.0083 $\pm$ 0.0004 | 3.60% | - | - | False ($k<10$) |
+| E1 | `Mondrian_k10_l3` | 10 | 3 | 0.0152 $\pm$ 0.0005 | 1.80% | - | - | **True** |
+| E1 | `Mondrian_k20_l3` | 20 | 3 | 0.0249 $\pm$ 0.0009 | 0.90% | - | - | **True** |
+| E2 | `DPSGD_eps_inf` | 10 | 3 | 0.0152 $\pm$ 0.0005 | 1.80% | 0.6951 $\pm$ 0.0026 | 0.1749 $\pm$ 0.0440 | True |
+| E2 | `DPSGD_eps_4.0` | 10 | 3 | 0.0152 $\pm$ 0.0005 | 1.80% | 0.6774 $\pm$ 0.0027 | 0.0873 $\pm$ 0.0142 | True |
+| E2 | `DPSGD_eps_2.0` | 10 | 3 | 0.0152 $\pm$ 0.0005 | 1.80% | 0.6775 $\pm$ 0.0031 | 0.0716 $\pm$ 0.0177 | True |
+| E2 | `DPSGD_eps_1.0` | 10 | 3 | 0.0152 $\pm$ 0.0005 | 1.80% | 0.6774 $\pm$ 0.0032 | 0.0458 $\pm$ 0.0157 | True |
+| E2 | `DPSGD_eps_0.5` | 10 | 3 | 0.0152 $\pm$ 0.0005 | 1.80% | 0.6774 $\pm$ 0.0029 | 0.0500 $\pm$ 0.0262 | True |
 
 </div>
 
@@ -116,6 +131,9 @@ python test_sensitivity.py
 
 # Run full parameter sensitivity evaluation, stress testing & Monte Carlo simulation
 python sensitivity_analysis.py
+
+# Run UCI Diabetes 130-US empirical benchmark (caches dataset under data/cache/)
+python benchmark_uci_diabetes.py
 ```
 
 ---
@@ -124,7 +142,7 @@ python sensitivity_analysis.py
 ## 中文说明
 
 ### 1. 论文与研究背景
-- **论文题目**：《个人信息保护法》下医疗健康数据二次治理与AI训练的场景风险安全港研究
+- **论文题目**：《个人信息保护法》下隐私保护健康数据治理与AI训练的可计算场景风险安全港研究
 - **当前状态**：审稿返修中（拟投递 ICBAR 2026，拟收录于 IOS Press *FAIA* 论文集）。
 - **学术定位**：针对我国《个人信息保护法》第 28、29 条敏感个人信息“单独同意”在回顾性医学科研与医疗大模型训练中的实务困境，构建基于国标 GB/T 39725-2020（附录 G）、受控联邦差分隐私沙箱与法律级联承诺的三要件场景风险安全港。
 - **先验假设与场景设定声明**：
@@ -137,7 +155,8 @@ python sensitivity_analysis.py
 ### 2. 双轨解耦治理判定机制（v1.1.0 核心更新）
 安全港不是单一数值计算器，而是“法定三要件 + 残余风险门槛”的双轨闭环：
 1. **纯数值风险门槛（`meets_risk_threshold`）**：严格十进制评估 $\alpha \times \gamma \le \tau \times k$。消除浮点截断误差，恰好 $4.00\%$ 时判定达标；
-2. **要件合规状态（`framework_requirements_status`）**：严格依凭表 2 准入要件。当小等价类样本（如罕见病 $k=5$）算得 $3.60\% \le 4.0\%$ 时，虽然数值通过，但要件状态明确返回 `failed`（因其违背了 $k_{\min} \ge 10$ 的法定最低泛化要求）。
+2. **要件合规状态（`framework_requirements_status`）**：严格依凭表 2 准入要件。当小等价类样本（如罕见病 $k=5$）算得 $3.60\% \le 4.0\%$ 时，虽然数值通过，但要件状态明确返回 `failed`（因其违背了 $k_{\min} \ge 10$ 的法定最低泛化要求）；
+3. **蒙特卡洛双重合取与 UCI 实证闭环（v1.2.0）**：在 10,000 次蒙特卡洛抽样中同时检验 $k_{\min} \ge 10$ 与 $R_{\mathrm{res}} \le 0.04$，真实双重合取达标率为 `75.08%`（见 `data/monte_carlo_results.csv`）；新增基于 UCI Diabetes 130-US 公开临床数据集的 `benchmark_uci_diabetes.py` 实证闭环（见 `data/uci_diabetes_benchmark.csv`）。
 
 ---
 
@@ -145,7 +164,7 @@ python sensitivity_analysis.py
 ## 日本語案内
 
 ### 1. 論文情報と研究概要
-- **論文題目**: 中国個人情報保護法下における医療健康データ二次利用およびAI訓練のためのシナリオリスク・セーフハーバー研究
+- **論文題目**: 中国個人情報保護法下におけるプライバシー保護医療健康データガバナンスおよびAI訓練のための計算可能なシナリオリスク・セーフハーバー研究
 - **現在のステータス**: 査読改訂中（ICBAR 2026 投稿予定、IOS Press *FAIA* 収録予定）。
 - **目的**: プライバシー保護工学と法解釈論を融合させた「シナリオリスク・セーフハーバー」の数理解析シミュレーションです。
 - **連絡先**: `3588@duck.com`
@@ -157,17 +176,20 @@ python sensitivity_analysis.py
 ```
 icbar-2026-safe-harbor-simulation/
 ├── README.md                          # Trilingual comprehensive documentation (EN / ZH / JA)
-├── REFERENCES.md                      # Complete annotated bibliography (22 regulatory & academic works)
+├── REFERENCES.md                      # Complete annotated bibliography (25 core regulatory & academic works + dataset citation)
 ├── LICENSE                            # MIT License for source code
-├── requirements.txt                   # Minimal Python runtime dependencies (numpy, matplotlib)
+├── requirements.txt                   # Minimal Python runtime dependencies (numpy, pandas, scipy, scikit-learn, matplotlib, requests)
 ├── sensitivity_analysis.py            # Executable parameter grid sweep, stress testing & Monte Carlo
-├── test_sensitivity.py                # Automated regression & assertion test suite (5 assertions)
+├── test_sensitivity.py                # Automated regression & assertion test suite (8 assertions)
+├── benchmark_uci_diabetes.py          # UCI Diabetes 130-US empirical benchmark (E1 Mondrian + E2 DP-SGD & MIA)
 ├── data/
+│   ├── cache/                         # Local git-ignored UCI 296 ZIP cache
 │   ├── sensitivity_grid.csv           # 315-point multi-parameter grid with decoupled evaluation
-│   └── monte_carlo_results.csv        # 10,000-draw stochastic simulation logs
+│   ├── monte_carlo_results.csv        # 10,000-draw stochastic simulation logs (with conjunctive flags)
+│   └── uci_diabetes_benchmark.csv     # Empirical E1 & E2 5-seed benchmark results
 └── figures/
     ├── figure1_safe_harbor_architecture.png   # Tripartite safe harbor architecture & PIA-IRB co-governance
-    ├── figure2_governance_evaluation.png      # Four-phase governance dynamic evolution
+    ├── figure2_uci_benchmark.png              # Empirical E1 Mondrian (k, l) & E2 DP-SGD/MIA benchmark
     └── figure_sensitivity_surface.png         # Refined 3D response surface and density chart (Research Threshold)
 ```
 

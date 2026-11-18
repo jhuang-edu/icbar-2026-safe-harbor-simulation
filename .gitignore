@@ -1,3 +1,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Local UCI dataset download cache and large raw files
+data/cache/
+*.zip
+diabetic_data.csv
+IDS_mapping.csv
