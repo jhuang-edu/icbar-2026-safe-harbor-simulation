@@ -41,7 +41,12 @@ This repository strictly adheres to reproducible research principles. Versions c
 - **Paper Title**: *Scenario-Risk Safe Harbor for Secondary Health Data Governance and AI Training under China's Personal Information Protection Law*
 - **Current Status**: Under Revision / Peer Review (Target Venue: ICBAR 2026, proceedings scheduled with IOS Press *FAIA*).
 - **Core Focus**: Addressing the operational challenges of sensitive personal data "separate consent" requirements under Articles 28 and 29 of China's PIPL for retrospective clinical research and medical AI training, proposing a three-element scenario-risk safe harbor framework.
-- **Methodological Hypotheses**: Baseline factors ($\alpha_{\mathrm{env}}=0.25$, $\gamma_{\mathrm{org}}=0.72$) and the safe harbor threshold ($\tau_{\mathrm{safe}}=0.04$) represent research-defined prior hypotheses for conditional probability risk modeling, subject to empirical calibration on target hospital cohorts.
+- **Methodological Scope & Scenario Assumptions**:
+  - The parameter $\alpha_{\mathrm{env}}=0.25$ is stipulated as an illustrative low-exposure scenario for zero-egress federated sandboxes; estimating combined real-world exposure requires empirical data on attack pathway frequency and overlap.
+  - The parameter $\gamma_{\mathrm{org}}=0.72$ assumes covenants and audit tracking reduce unauthorized linkage attempts by 28% relative to a no-control reference. Both values are scenario assumptions pending prospective multi-center calibration.
+  - Parameter sensitivity analysis explores outcome variations across alternative input combinations rather than validating the baseline priors themselves.
+  - Safe harbor protection operates as a **dual conjunctive test**: datasets must satisfy both all three structural elements ($k_{\min} \ge 10$, DP sandbox, covenants/PIA-IRB) AND composite risk $R_{\mathrm{res}} \le 0.04$.
+  - The utility falsification cutoff is defined as an **absolute decrease of more than 0.05 in macro ROC-AUC** against unprotected baselines on identical evaluation sets.
 - **Academic Contact**: `3588@duck.com` (for research questions and simulation inquiries).
 
 ### 2. Architecture & Governance Diagrams
@@ -71,17 +76,17 @@ Where:
 
 ### 4. Decoupled Operational Scenarios & Stress Testing
 
-| Scenario ID | Operational Scenario Description | $k_{\min}$ | $\alpha_{\mathrm{env}}$ | $\gamma_{\mathrm{org}}$ | $R_{\mathrm{res}}$ | Numeric Pass ($\le 4\%$) | Framework Status ($k \ge 10$ & Triad) |
-|:---:|:---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **S1** | **Baseline Full Safe Harbor** | **10** | **0.25** | **0.72** | **1.80%** | **True** | **passed** |
-| S2 | Element 1 Alone (Raw export, no covenant) | 10 | 1.00 | 1.00 | 10.00% | False | failed |
-| S3 | Elements 1 & 2 (Sandbox, no covenant) | 10 | 0.25 | 1.00 | 2.50% | True | failed |
-| S4 | Environmental Degradation (+120% exposure) | 10 | 0.55 | 0.72 | 3.96% | True | passed |
-| S5 | Critical Environment Breakdown ($\alpha=0.60$) | 10 | 0.60 | 0.72 | 4.32% | False | passed |
-| S6 | Rare Disease Cohort (Small class $k=5$) | 5 | 0.25 | 0.72 | 3.60% | True | **failed ($k < 10$)** |
-| S7 | Boundary Edge Case ($k=5, \alpha=0.20, \gamma=1.0$) | 5 | 0.20 | 1.00 | 4.00% | **True (Exact 4%)** | **failed ($k < 10$)** |
-| S8 | Sub-Threshold Rare Cohort ($k=4$) | 4 | 0.25 | 0.72 | 4.50% | False | failed |
-| S9 | Ultra-Secure Sandbox ($k=15, \varepsilon=1.0$) | 15 | 0.15 | 0.72 | 0.72% | True | passed |
+| Scenario ID | Operational Scenario Description | $k_{\min}$ | Min $k \ge 10$? | $\alpha_{\mathrm{env}}$ | $\gamma_{\mathrm{org}}$ | $R_{\mathrm{res}}$ | Numeric Pass ($\le 4\%$) | Framework Status (Triad Gate) |
+|:---:|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **S1** | **Baseline Full Safe Harbor** | **10** | **True** | **0.25** | **0.72** | **1.80%** | **True** | **passed** |
+| S2 | Element 1 Alone (Raw export, no covenant) | 10 | True | 1.00 | 1.00 | 10.00% | False | failed |
+| S3 | Elements 1 & 2 (Sandbox, no covenant) | 10 | True | 0.25 | 1.00 | 2.50% | True | failed |
+| S4 | Environmental Degradation (+120% exposure) | 10 | True | 0.55 | 0.72 | 3.96% | True | passed |
+| S5 | Critical Environment Breakdown ($\alpha=0.60$) | 10 | True | 0.60 | 0.72 | 4.32% | False | passed |
+| S6 | Rare Disease Cohort (Small class $k=5$) | 5 | False | 0.25 | 0.72 | 3.60% | True | **failed ($k < 10$)** |
+| S7 | Boundary Edge Case ($k=5, \alpha=0.20, \gamma=1.0$) | 5 | False | 0.20 | 1.00 | 4.00% | **True (Exact 4%)** | **failed ($k < 10$)** |
+| S8 | Sub-Threshold Rare Cohort ($k=4$) | 4 | False | 0.25 | 0.72 | 4.50% | False | failed |
+| S9 | Ultra-Secure Sandbox ($k=15, \varepsilon=1.0$) | 15 | True | 0.15 | 0.72 | 0.72% | True | passed |
 
 #### Stress Testing & Distance-to-Failure Analysis
 The analytical critical exposure threshold is defined by $\alpha_{\mathrm{crit}} = \frac{\tau_{\mathrm{safe}} \cdot k_{\min}}{\gamma_{\mathrm{org}}}$:
@@ -122,7 +127,11 @@ python sensitivity_analysis.py
 - **论文题目**：《个人信息保护法》下医疗健康数据二次治理与AI训练的场景风险安全港研究
 - **当前状态**：审稿返修中（拟投递 ICBAR 2026，拟收录于 IOS Press *FAIA* 论文集）。
 - **学术定位**：针对我国《个人信息保护法》第 28、29 条敏感个人信息“单独同意”在回顾性医学科研与医疗大模型训练中的实务困境，构建基于国标 GB/T 39725-2020（附录 G）、受控联邦差分隐私沙箱与法律级联承诺的三要件场景风险安全港。
-- **先验假设声明**：基准系数（$\alpha_{\mathrm{env}}=0.25, \gamma_{\mathrm{org}}=0.72$）与门控阈值（$\tau_{\mathrm{safe}}=0.04$）属于探索性数理推导设定的研究先验假设，输出判定定义为“模型阈值判定”，非现行成文法直接法定标准。
+- **先验假设与场景设定声明**：
+  - 环境暴露系数（$\alpha_{\mathrm{env}}=0.25$）与组织控制系数（$\gamma_{\mathrm{org}}=0.72$）属于用于模拟受控零出域沙箱的情景假设（Scenario Assumptions），精确量化有赖于后续对泄漏路径重叠度与发生频次的实证数据；
+  - 敏感性分析用于探索在替代输入组合下输出的变动规律，而非验证先验假设本身的客观真实性；
+  - 安全港的确立采用**双重合取判定机制（Dual Conjunctive Test）**：必须同时满足三要件（$k_{\min} \ge 10$、差分隐私沙箱、级联承诺与PIA-IRB联审）**且**残余风险满足 $R_{\mathrm{res}} \le 0.04$；
+  - 临床效用证伪标准严格定义为：在相同评估集上下游 macro ROC-AUC 相比无扰动基线**绝对下降超过 0.05**。
 - **联系邮箱**：`3588@duck.com`（学术交流、仿真代码复现咨询）。
 
 ### 2. 双轨解耦治理判定机制（v1.1.0 核心更新）

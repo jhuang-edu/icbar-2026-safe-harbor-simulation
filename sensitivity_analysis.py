@@ -67,6 +67,11 @@ def meets_risk_threshold(k_min, alpha_env, gamma_org, tau_safe=0.04):
     return (d_alpha * d_gamma) <= (d_tau * d_k)
 
 
+def meets_minimum_k(k_min, threshold=10):
+    """Evaluates whether equivalence class size satisfies Element 1 baseline threshold (k_min >= 10)."""
+    return int(k_min) >= int(threshold)
+
+
 def evaluate_framework_requirements(k_min, has_l_diversity=None, has_sandbox=None, has_covenants=None, has_pia_irb=None, config=None):
     """
     Decoupled legal governance criteria evaluation per Table 2:
@@ -111,7 +116,7 @@ def run_grid_sensitivity(config: SimulationConfig):
     with open(csv_path, mode="w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow([
-            "k_min", "p_link", "alpha_env", "gamma_org",
+            "k_min", "meets_minimum_k", "p_link", "alpha_env", "gamma_org",
             "R_res", "R_res_pct", "meets_risk_threshold",
             "framework_requirements_status", "alpha_critical", "boundary_margin"
         ])
@@ -120,6 +125,7 @@ def run_grid_sensitivity(config: SimulationConfig):
             for a in config.alpha_vals:
                 for g in gamma_vals:
                     r = calculate_risk(k, a, g)
+                    min_k_met = meets_minimum_k(k, config.k_min_threshold)
                     numeric_pass = meets_risk_threshold(k, a, g, config.tau_safe)
                     # When assessing raw grid points, auxiliary controls are not evaluated
                     fw_status = evaluate_framework_requirements(k, None, None, None, None, config)
@@ -127,7 +133,7 @@ def run_grid_sensitivity(config: SimulationConfig):
                     margin = alpha_crit - a
 
                     writer.writerow([
-                        k, f"{1.0/k:.4f}", a, g,
+                        k, min_k_met, f"{1.0/k:.4f}", a, g,
                         f"{r:.6f}", f"{r*100:.2f}%", numeric_pass,
                         fw_status, f"{alpha_crit:.4f}", f"{margin:.4f}"
                     ])
@@ -149,14 +155,15 @@ def run_grid_sensitivity(config: SimulationConfig):
         ("Ultra-Secure Sandbox (k=15, DP epsilon=1.0)", 15, 0.15, 0.72, True, True, True, True),
     ]
 
-    header = f"{'Scenario Name':<42} | {'k':<3} | {'alpha':<5} | {'gamma':<5} | {'R_res':<7} | {'Risk Met?':<9} | {'Framework Status'}"
+    header = f"{'Scenario Name':<42} | {'k':<3} | {'Min k?':<7} | {'alpha':<5} | {'gamma':<5} | {'R_res':<7} | {'Risk Met?':<9} | {'Framework Status'}"
     print(header)
     print("-" * len(header))
     for name, k, a, g, has_l, has_sb, has_cov, has_pia in scenarios:
         r = calculate_risk(k, a, g)
+        min_k_met = meets_minimum_k(k, config.k_min_threshold)
         r_met = meets_risk_threshold(k, a, g, config.tau_safe)
         fw_status = evaluate_framework_requirements(k, has_l, has_sb, has_cov, has_pia, config)
-        print(f"{name:<42} | {k:<3} | {a:<5.2f} | {g:<5.2f} | {r*100:>5.2f}% | {str(r_met):<9} | {fw_status}")
+        print(f"{name:<42} | {k:<3} | {str(min_k_met):<7} | {a:<5.2f} | {g:<5.2f} | {r*100:>5.2f}% | {str(r_met):<9} | {fw_status}")
 
 
 def run_stress_testing(config: SimulationConfig):

@@ -22,6 +22,7 @@ from sensitivity_analysis import (
     calculate_risk,
     calculate_risk_decimal,
     meets_risk_threshold,
+    meets_minimum_k,
     evaluate_framework_requirements,
     calculate_critical_alpha,
 )
@@ -65,6 +66,10 @@ class TestSensitivityAnalysis(unittest.TestCase):
         # Numeric check: 3.60% <= 4.00% -> True
         meets_thresh = meets_risk_threshold(k, alpha, gamma, tau_safe=0.04)
         self.assertTrue(meets_thresh, "Numeric risk 3.60% is <= 4.00% and must pass.")
+
+        # Minimum k check: k=5 fails minimum k >= 10
+        self.assertFalse(meets_minimum_k(5, 10), "k=5 must evaluate meets_minimum_k to False.")
+        self.assertTrue(meets_minimum_k(10, 10), "k=10 must evaluate meets_minimum_k to True.")
 
         # Framework check: k=5 < 10 -> MUST fail framework requirements
         fw_status = evaluate_framework_requirements(k, True, True, True, True, self.config)
