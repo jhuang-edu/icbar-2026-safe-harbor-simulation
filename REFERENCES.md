@@ -33,7 +33,7 @@ All items are categorized by domain with active persistent identifiers (DOIs, of
 ### `[12]` EU General Data Protection Regulation (GDPR)
 - **Citation**: European Parliament and Council of the European Union. *Regulation (EU) 2016/679 on the protection of natural persons with regard to the processing of personal data*, 27 April 2016. *Official Journal of the European Union* L 119 (2016), 1–88, Arts. 9(2)(j), 17(3)(d), 89(1)–(2), Recital 33.
 - **Comparative Role**: Serves as the international benchmark for the statutory scientific research exception and secondary data processing regime under Art. 89.
-- **Official Source**: [EUR-Lex Official Publication](https://doi.org/10.5040/9781782258674)
+- **Official Source**: [EUR-Lex Official Publication](https://eur-lex.europa.eu/eli/reg/2016/679/oj)
 
 ### `[13]` European Health Data Space (EHDS) Regulation
 - **Citation**: European Parliament and Council of the European Union. *Regulation (EU) 2025/327 of 11 February 2025 on the European Health Data Space*, *Official Journal of the European Union* L 2025/327 (5 March 2025), Arts. 51, 53, 55, 57, 73, 105.
