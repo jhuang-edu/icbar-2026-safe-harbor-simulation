@@ -4,8 +4,8 @@
 ### Open-Source Reproducibility Suite for Academic Research
 
 [![Release](https://img.shields.io/badge/Release-v1.3.0-blue.svg?style=flat-square)](#version-history)
-[![Target Venue](https://img.shields.io/badge/Target%20Venue-ICBAR%202026-1f6feb.svg?style=flat-square)](https://www.icbar.net/)
-[![Status](https://img.shields.io/badge/Status-Active%20Release-success.svg?style=flat-square)](#)
+[![Target Venue](https://img.shields.io/badge/Venue-ICBAR%202026%20(Accepted)-success.svg?style=flat-square)](https://www.icbar.net/)
+[![Status](https://img.shields.io/badge/Paper%20Status-Accepted%20(v1.2.0%20Final)-brightgreen.svg?style=flat-square)](#version-history)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg?style=flat-square)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/Code%20License-MIT-yellow.svg?style=flat-square)](LICENSE)
 [![Data: CC BY 4.0](https://img.shields.io/badge/Data%20License-CC%20BY%204.0-lightgrey.svg?style=flat-square)](https://creativecommons.org/licenses/by/4.0/)
@@ -32,8 +32,8 @@ This repository provides the open-source simulation and empirical benchmark suit
 |:---:|:---:|:---|
 | [**v1.0.0**](https://github.com/jhuang-edu/icbar-2026-safe-harbor-simulation/releases/tag/v1.0.0) | Archived Snapshot | **Initial baseline simulation snapshot:** Parameter grid sweep, chain-rule residual risk formalization ($R_{\mathrm{res}} = 1.80\%$ baseline), and 10,000-draw Monte Carlo perturbation analysis. |
 | [**v1.1.0**](https://github.com/jhuang-edu/icbar-2026-safe-harbor-simulation/releases/tag/v1.1.0) | Archived Snapshot | **Methodological hardening & decoupled criteria release:**<br>1. **IEEE 754 Precision Fix**: Implemented exact decimal evaluation for $\alpha \times \gamma \le \tau \times k$. In the 315-point grid, only **one single edge-case** (`k=5, alpha=0.20, gamma=1.00`) changes evaluation from `False` to `True` (exactly equals 4.00%).<br>2. **Decoupled Governance Evaluation**: Disentangled pure numeric threshold (`meets_risk_threshold`) from statutory triad criteria (`framework_requirements_status`). For example, $k=5$ yields $3.60\% \le 4.0\%$ (numeric pass), but fails statutory criteria because $k < 10$.<br>3. **Reproducible Stress Testing**: Introduced environmental degradation and organizational erosion stress scenarios with analytical safety margins $\alpha_{\mathrm{crit}} = \frac{\tau \cdot k}{\gamma}$.<br>4. **Statistical Rigor**: Explicitly documented sampling distribution as Clipped Normal with optional Truncated Normal support; updated visualizations to reflect research-defined thresholds. |
-| [**v1.2.0**](https://github.com/jhuang-edu/icbar-2026-safe-harbor-simulation/releases/tag/v1.2.0) | Archived Snapshot | **UCI Diabetes 130-US empirical benchmark & conjunctive Monte Carlo suite:**<br>1. **UCI Diabetes 130-US Empirical Benchmark (`benchmark_uci_diabetes.py`)**: End-to-end leakage-free 5-seed (`GroupShuffleSplit`, seeds 42 to 46) evaluation on 101,766 encounters / 71,518 patients covering E1 (6-QI Mondrian $(k, l)$-anonymity) and E2 (per-sample L2-clipped DP-SGD with log-domain RDP accounting + Yeom MIA defense), exporting `data/uci_diabetes_benchmark.csv` and `figures/figure2_uci_benchmark.png`.<br>2. **Conjunctive Monte Carlo Evaluation**: Updated `sensitivity_analysis.py` to evaluate the dual conjunctive gate ($k_{\min} \ge 10 \land R_{\mathrm{res}} \le 0.04$, yielding `75.08%` compliance across 10,000 draws, exported with `meets_minimum_k` and `passes_safe_harbor` columns).<br>3. **Architecture & Reference Alignment**: Synchronized `figure1_safe_harbor_architecture.png` with statutory provisions and updated official EUR-Lex ELI reference links. |
-| [**v1.3.0**](https://github.com/jhuang-edu/icbar-2026-safe-harbor-simulation/releases/tag/v1.3.0) | Current Release | **Academic Clarifications & Empirical FAQ Module:**<br>1. **Bilingual Technical FAQ Section**: Added comprehensive Q&A addressing subtle empirical nuances: (i) non-monotonicity explanations for local MIA advantage under $\varepsilon=0.5$ vs $1.0$ (overlapping standard errors), (ii) flat ROC-AUC responses across DP budgets on the 101k cohort due to $L_2$ gradient clipping dominance, (iii) explicit confirmation of the unperturbed raw baseline ROC-AUC (`0.6990`), and (iv) dual conjunctive gate semantics reconciling $R_{\mathrm{res}} \le 0.04$ with $k_{\min} \ge 10$.<br>2. **Data & Table Cross-Verification**: Synchronized README tables with explicit annotations on sample standard deviations and integer-mean equivalence class statistics across 5-fold evaluations. |
+| [**v1.2.0**](https://github.com/jhuang-edu/icbar-2026-safe-harbor-simulation/releases/tag/v1.2.0) | **Accepted Paper Final Snapshot** | **Accepted Camera-Ready Manuscript Benchmark (`v1.2.0`):**<br>1. **Official Accepted Paper Release**: Exact code, dataset, and figure snapshot corresponding to the **accepted final manuscript** at ICBAR 2026.<br>2. **UCI Diabetes 130-US Empirical Benchmark (`benchmark_uci_diabetes.py`)**: End-to-end leakage-free 5-seed (`GroupShuffleSplit`, seeds 42 to 46) evaluation on 101,766 encounters / 71,518 patients covering E1 (6-QI Mondrian $(k, l)$-anonymity) and E2 (per-sample L2-clipped DP-SGD with log-domain RDP accounting + Yeom MIA defense), exporting `data/uci_diabetes_benchmark.csv` and `figures/figure2_uci_benchmark.png`.<br>3. **Conjunctive Monte Carlo Evaluation**: Updated `sensitivity_analysis.py` to evaluate the dual conjunctive gate ($k_{\min} \ge 10 \land R_{\mathrm{res}} \le 0.04$, yielding `75.08%` compliance across 10,000 draws, exported with `meets_minimum_k` and `passes_safe_harbor` columns).<br>4. **Architecture & Reference Alignment**: Synchronized `figure1_safe_harbor_architecture.png` with statutory provisions and updated official EUR-Lex ELI reference links. |
+| [**v1.3.0**](https://github.com/jhuang-edu/icbar-2026-safe-harbor-simulation/releases/tag/v1.3.0) | **Online Companion Supplement** | **GitHub Extended Documentation & Technical FAQ (`v1.3.0`):**<br>1. **Post-Acceptance Online Technical Supplement**: While `v1.2.0` locks the exact accepted camera-ready manuscript, `v1.3.0` is published exclusively on GitHub as an extended online companion to address reader and peer-review technical inquiries.<br>2. **Bilingual Technical FAQ Section**: Comprehensive Q&A explaining empirical nuances in the `v1.2.0` manuscript: (i) standard error overlap for local MIA advantage under $\varepsilon=0.5$ vs $1.0$, (ii) flat ROC-AUC responses across DP budgets on the 101k cohort due to $L_2$ gradient clipping dominance, (iii) explicit tabulation of the unperturbed raw baseline ROC-AUC (`0.6990 ± 0.0028`), (iv) dual conjunctive gate semantics reconciling $R_{\mathrm{res}} \le 0.04$ with $k_{\min} \ge 10$, and (v) per-fold integer equivalence class counts (`1457, 1463, 1458, 1461, 1458`) underlying the `1,459.4` fold mean. |
 
 ---
 
@@ -42,7 +42,8 @@ This repository provides the open-source simulation and empirical benchmark suit
 
 ### 1. Research Overview & Methodological Scope
 - **Paper Title**: *A Computational Scenario-Risk Safe Harbor for Privacy-Preserving Health Data Governance and AI Training under China's Personal Information Protection Law*
-- **Target Venue**: ICBAR 2026 (Proceedings Series: IOS Press *Frontiers in Artificial Intelligence and Applications*, FAIA).
+- **Target Venue & Status**: **Accepted for Publication** at ICBAR 2026 (Proceedings Series: IOS Press *Frontiers in Artificial Intelligence and Applications*, FAIA).
+- **Version Mapping**: Release **`v1.2.0`** corresponds directly to the **accepted final manuscript (camera-ready)**; Release **`v1.3.0`** provides the online GitHub companion supplement and Technical FAQ.
 - **Core Focus**: Addressing the operational challenges of sensitive personal data "separate consent" requirements under Articles 28 and 29 of China's PIPL for retrospective clinical research and medical AI training, proposing a three-element scenario-risk safe harbor framework.
 - **Methodological Scope & Scenario Assumptions**:
   - The parameter $\alpha_{\mathrm{env}}=0.25$ is stipulated as an illustrative low-exposure scenario for zero-egress federated sandboxes; estimating combined real-world exposure requires empirical data on attack pathway frequency and overlap.
@@ -145,13 +146,13 @@ python benchmark_uci_diabetes.py
 <a name="faq"></a>
 ## 💡 Technical FAQ & Paper Clarifications / 常见技术问答与论文补充注记
 
-> **Context & Versioning Note / 版本与上下文定位说明**：
-> - **Current Scope (For v1.2.0 Submission)**: The following clarifications and empirical notes specifically address the submitted manuscript and the accompanying code release **v1.2.0** (the version submitted to EICA for review). They provide necessary statistical grounding, metric interpretations, and methodological context without altering the submitted text.
-> - **Prospective Scope (Upon Review & Revision)**: If the conference review process permits formal manuscript revision (Camera-Ready / Post-Review Rebuttal), these clarifications will be formally merged and reconciled into the revised paper text and tables, corresponding to the prospective **v1.3.0** publication milestone.
+> **Publication Status & Versioning Note / 录用状态与版本对应说明**：
+> - **Accepted Final Manuscript (`v1.2.0`)**: The paper has been **officially accepted for publication** at ICBAR 2026. The submitted and accepted final manuscript corresponds strictly to the **`v1.2.0`** codebase and empirical snapshot.
+> - **GitHub Online Companion Supplement (`v1.3.0`)**: Because `v1.2.0` is locked as the final camera-ready manuscript, the extended clarifications, tabular cross-checks, and statistical proofs documented below are hosted on GitHub as release **`v1.3.0`** to serve as an online technical supplement for readers and researchers.
 > 
 > **中文说明**：
-> - **当前阶段（针对已提交的 v1.2.0 版论文与代码）**：本技术问答与注记专门针对已提交至 EICA 评审的论文原稿及配套的 **v1.2.0** 开源版本。在不变更已提交原稿的前提下，为审稿人与同行学者提供详尽的统计学原理解释、表格指标界定与实验背景。
-> - **后续阶段（若获准返修/终版录用）**：若会议发出修改与返修通知（Rebuttal / Camera-Ready），届时正文表头与相关讨论将正式吸收本部分内容，论文原稿与开源工程将同步升级并统一锚定至 **v1.3.0**。
+> - **已录用论文最终定稿（对应 `v1.2.0`）**：本论文已正式获 **ICBAR 2026 录用（Accepted）**，出版定稿（Final Manuscript）完全锁定并对应本仓库的 **`v1.2.0`** 版本。
+> - **GitHub 在线技术补充与扩展问答（对应 `v1.3.0`）**：鉴于 `v1.2.0` 即为论文最终正式录用稿，后续针对论文数据细节的扩展统计学解析、原始无保护基线（`0.6990`）对照、双重合取门禁规则及 5 折等价类均值明细，统一作为 **`v1.3.0`** 在 GitHub 线上维护展示，供同行学者与读者查阅参考。
 
 This section provides explicit answers and empirical explanations regarding theoretical formulations, table interpretations, and statistical properties evaluated in the paper and benchmark suite.
 
@@ -246,7 +247,8 @@ This section provides explicit answers and empirical explanations regarding theo
 
 ### 1. 论文与研究背景
 - **论文题目**：《个人信息保护法》下隐私保护健康数据治理与AI训练的可计算场景风险安全港研究
-- **目标会议**：ICBAR 2026（IOS Press *FAIA* 丛书）。
+- **目标会议与状态**：**ICBAR 2026（已正式录用 / Accepted**，出版于 IOS Press *FAIA* 丛书）。
+- **版本对应关系**：**`v1.2.0`** 为论文最终正式录用出版定稿（Final Manuscript Snapshot）；**`v1.3.0`** 的更新内容作为 GitHub 在线技术补充与常见问答（Online Companion Supplement）发布于本仓库。
 - **学术定位**：针对我国《个人信息保护法》第 28、29 条敏感个人信息“单独同意”在回顾性医学科研与医疗大模型训练中的实务困境，构建基于国标 GB/T 39725-2020（附录 G）、受控联邦差分隐私沙箱与法律级联承诺的三要件场景风险安全港。
 - **先验假设与场景设定声明**：
   - 环境暴露系数（$\alpha_{\mathrm{env}}=0.25$）与组织控制系数（$\gamma_{\mathrm{org}}=0.72$）属于用于模拟受控零出域沙箱的情景假设（Scenario Assumptions），精确量化有赖于后续对泄漏路径重叠度与发生频次的实证数据；
@@ -271,7 +273,7 @@ This section provides explicit answers and empirical explanations regarding theo
 
 ### 1. 論文情報と研究概要
 - **論文題目**: 中国個人情報保護法下におけるプライバシー保護医療健康データガバナンスおよびAI訓練のための計算可能なシナリオリスク・セーフハーバー研究
-- **対象会議**: ICBAR 2026（IOS Press *FAIA* シリーズ）。
+- **対象会議・採択状況**: **ICBAR 2026 採択決定（Accepted** / IOS Press *FAIA* シリーズ出版）。最終採択原稿は **`v1.2.0`** に対応し、追加の技術解説および FAQ は GitHub 上の **`v1.3.0`** にて公開されています。
 - **目的**: プライバシー保護工学と法解釈論を融合させた「シナリオリスク・セーフハーバー」の数理解析シミュレーションです。
 - **連絡先**: `3588@duck.com`
 

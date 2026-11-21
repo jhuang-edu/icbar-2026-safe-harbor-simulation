@@ -3,7 +3,8 @@
 This repository provides the full, annotated bibliography of the 25 core regulatory statutes, judicial precedents, technical standards, and foundational academic literature referenced in the study, along with the primary clinical benchmark dataset citation:
 
 > **Paper**: *A Computational Scenario-Risk Safe Harbor for Privacy-Preserving Health Data Governance and AI Training under China's Personal Information Protection Law*  
-> **Venue**: ICBAR 2026 (Proceedings Series: IOS Press *Frontiers in Artificial Intelligence and Applications*, FAIA)
+> **Venue & Status**: **Accepted for Publication** at ICBAR 2026 (Proceedings Series: IOS Press *Frontiers in Artificial Intelligence and Applications*, FAIA)  
+> **Version Mapping**: Accepted Final Manuscript corresponds strictly to release **`v1.2.0`**; extended online technical clarifications and FAQ are maintained on GitHub under release **`v1.3.0`**.
 
 All items are categorized by domain with active persistent identifiers (DOIs, official government gazettes, and official judicial bulletins) for seamless independent auditing and reproducibility.
 
