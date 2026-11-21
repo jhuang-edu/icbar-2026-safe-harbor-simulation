@@ -3,6 +3,7 @@
 This repository provides the full, annotated bibliography of the 25 core regulatory statutes, judicial precedents, technical standards, and foundational academic literature referenced in the study, along with the primary clinical benchmark dataset citation:
 
 > **Paper**: *A Computational Scenario-Risk Safe Harbor for Privacy-Preserving Health Data Governance and AI Training under China's Personal Information Protection Law*  
+> **Author & Primary Affiliations**: **Junjun Huang** (*Department of Management, Faculty of Economics and Business, Universitas Hasanuddin, Makassar 90245, Indonesia*; *Department of Artificial Intelligence, Faculty of Computer Science and Information Technology, Universiti Malaya, 50603 Kuala Lumpur, Malaysia*) | **Contact**: `3588@duck.com`  
 > **Venue & Status**: **Accepted for Publication** at ICBAR 2026 (Proceedings Series: IOS Press *Frontiers in Artificial Intelligence and Applications*, FAIA)  
 > **Version Mapping**: Accepted Final Manuscript corresponds strictly to release **`v1.2.0`**; extended online technical clarifications and FAQ are maintained on GitHub under release **`v1.3.0`**.
 
@@ -109,17 +110,17 @@ All items are categorized by domain with active persistent identifiers (DOIs, of
 
 ### `[15]` Anonymising and Sharing Individual Patient Data
 - **Citation**: El Emam, K., Rodgers, S., and Malin, B. (2015). Anonymising and sharing individual patient data. *BMJ*, 350, h1139.
-- **Mathematical Role**: Provides the empirical justification for the re-identification risk thresholds ($\le 0.05$ in HIPAA expert determination and $\le 0.09$ in EMA Policy 0070), supporting our calibrated $\tau_{\mathrm{safe}} \le 0.04$ threshold.
+- **Mathematical Role**: Provides the empirical justification for the re-identification risk thresholds (`≤ 0.05` in HIPAA expert determination and `≤ 0.09` in EMA Policy 0070), supporting our calibrated `τ_safe ≤ 0.04` threshold.
 - **DOI Link**: [https://doi.org/10.1136/bmj.h1139](https://doi.org/10.1136/bmj.h1139)
 
 ### `[18]` k-Anonymity Privacy Protection Model
 - **Citation**: Sweeney, L. (2002). k-anonymity: A model for protecting privacy. *International Journal of Uncertainty, Fuzziness and Knowledge-Based Systems*, 10(5), 557–570.
-- **Mathematical Role**: Directly underpins Equation (1) parameter $k_{\min} \ge 10$, bounding maximum linkage probability by $p_{\mathrm{link}} = 1 / k_{\min}$.
+- **Mathematical Role**: Directly underpins Equation (1) parameter `k_min ≥ 10`, bounding maximum linkage probability by `p_link = 1 / k_min`.
 - **DOI Link**: [https://doi.org/10.1142/S0218488502001648](https://doi.org/10.1142/S0218488502001648)
 
 ### `[19]` Deep Learning with Differential Privacy (DP-SGD)
 - **Citation**: Abadi, M., Chu, A., Goodfellow, I., McMahan, H.B., Mironov, I., Talwar, K., and Zhang, L. (2016). Deep learning with differential privacy. In: *Proc. ACM SIGSAC Conf. on Computer and Communications Security (CCS)*, pp. 308–318.
-- **Technical Role**: Underpins Safe Harbor Element 2 (controlled sandbox with DP-SGD gradient perturbation: $\varepsilon \le 2.0, \delta = 10^{-5}$).
+- **Technical Role**: Underpins Safe Harbor Element 2 (controlled sandbox with DP-SGD gradient perturbation: `ε ≤ 2.0, δ = 10⁻⁵`).
 - **DOI Link**: [https://doi.org/10.1145/2976749.2978318](https://doi.org/10.1145/2976749.2978318)
 
 ### `[23]` Mondrian Multidimensional K-Anonymity (Supplemental Privacy Engineering Literature)
@@ -129,12 +130,12 @@ All items are categorized by domain with active persistent identifiers (DOIs, of
 
 ### `[24]` l-Diversity Beyond k-Anonymity (Supplemental Privacy Engineering Literature)
 - **Citation**: Machanavajjhala, A., Kifer, D., Gehrke, J., and Venkitasubramaniam, M. (2007). l-diversity: Privacy beyond k-anonymity. *ACM Transactions on Knowledge Discovery from Data (TKDD)*, 1(1), Article 3.
-- **Technical Role**: Grounds the $l \ge 3$ distinct sensitive-diagnosis constraint integrated into Safe Harbor Element 1 and the Mondrian $(k, l)$ partitioning gate.
+- **Technical Role**: Grounds the `l ≥ 3` distinct sensitive-diagnosis constraint integrated into Safe Harbor Element 1 and the Mondrian `(k, l)` partitioning gate.
 - **DOI Link**: [https://doi.org/10.1145/1217299.1217302](https://doi.org/10.1145/1217299.1217302)
 
 ### `[25]` Privacy Risk in Machine Learning & Membership Inference Attacks (Supplemental Privacy Engineering Literature)
 - **Citation**: Yeom, S., Giacomelli, I., Fredrikson, M., and Jha, S. (2018). Privacy risk in machine learning: Analyzing the connection to overfitting. In: *Proc. IEEE 31st Computer Security Foundations Symposium (CSF)*, IEEE, Oxford, UK, pp. 268–282.
-- **Technical Role**: Formalizes the loss-threshold membership inference attack (MIA) advantage metric ($\mathrm{TPR} - \mathrm{FPR}$) used in Experiment E2 to evaluate privacy leakage under varying $\varepsilon$.
+- **Technical Role**: Formalizes the loss-threshold membership inference attack (MIA) advantage metric (`TPR - FPR`) used in Experiment E2 to evaluate privacy leakage under varying `ε`.
 - **DOI Link**: [https://doi.org/10.1109/CSF.2018.00027](https://doi.org/10.1109/CSF.2018.00027)
 
 ---
