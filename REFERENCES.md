@@ -68,7 +68,7 @@ All items are categorized by domain with active persistent identifiers (DOIs, of
 
 ### `[Dataset]` UCI Diabetes 130-US Hospitals Clinical Benchmark (ID=296)
 - **Citation**: Strack, B., DeShazo, J.P., Gennings, C., Olmo, J.L., Ventura, S., Cios, K.J., and Clore, J.N. (2014). Impact of HbA1c measurement on hospital readmission rates: Analysis of 70,000 clinical database patient records. *BioMed Research International*, 2014, 781670.
-- **Technical Role**: Open-access empirical EHR benchmark (101,766 encounters across 71,518 unique patients) used in `benchmark_uci_diabetes.py` to evaluate Mondrian $(k, l)$ generalization (E1) and DP-SGD utility/MIA defense (E2).
+- **Technical Role**: Open-access empirical EHR benchmark (101,766 encounters across 71,518 unique patients) used in `benchmark_uci_diabetes.py` to evaluate Mondrian `(k, l)` generalization (E1) and DP-SGD utility/MIA defense (E2).
 - **DOI Link**: [https://doi.org/10.1155/2014/781670](https://doi.org/10.1155/2014/781670) | **Dataset DOI**: [https://doi.org/10.24432/C5230J](https://doi.org/10.24432/C5230J)
 
 ---

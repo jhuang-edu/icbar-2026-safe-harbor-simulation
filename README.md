@@ -43,8 +43,8 @@ This repository provides the open-source simulation and empirical benchmark suit
 ### 1. Research Overview & Methodological Scope
 - **Paper Title**: *A Computational Scenario-Risk Safe Harbor for Privacy-Preserving Health Data Governance and AI Training under China's Personal Information Protection Law*
 - **Author & Primary Affiliations**: **Junjun Huang**
-  - $^{1}$ *Department of Management, Faculty of Economics and Business, Universitas Hasanuddin, Makassar 90245, Indonesia*
-  - $^{2}$ *Department of Artificial Intelligence, Faculty of Computer Science and Information Technology, Universiti Malaya, 50603 Kuala Lumpur, Malaysia*
+  - <sup>1</sup> *Department of Management, Faculty of Economics and Business, Universitas Hasanuddin, Makassar 90245, Indonesia*
+  - <sup>2</sup> *Department of Artificial Intelligence, Faculty of Computer Science and Information Technology, Universiti Malaya, 50603 Kuala Lumpur, Malaysia*
 - **Target Venue & Status**: **Accepted for Publication** at ICBAR 2026 (Proceedings Series: IOS Press *Frontiers in Artificial Intelligence and Applications*, FAIA).
 - **Version Mapping**: Release **`v1.2.0`** corresponds directly to the **accepted final manuscript (camera-ready)**; Release **`v1.3.0`** provides the online GitHub companion supplement and Technical FAQ.
 - **Core Focus**: Addressing the operational challenges of sensitive personal data "separate consent" requirements under Articles 28 and 29 of China's PIPL for retrospective clinical research and medical AI training, proposing a three-element scenario-risk safe harbor framework.
@@ -289,8 +289,8 @@ This section provides explicit answers and empirical explanations regarding theo
 ### 1. 論文情報と研究概要
 - **論文題目**: 中国個人情報保護法下におけるプライバシー保護医療健康データガバナンスおよびAI訓練のための計算可能なシナリオリスク・セーフハーバー研究
 - **著者・所属機関**: **Junjun Huang**
-  - $^{1}$ *Department of Management, Faculty of Economics and Business, Universitas Hasanuddin, Makassar 90245, Indonesia*
-  - $^{2}$ *Department of Artificial Intelligence, Faculty of Computer Science and Information Technology, Universiti Malaya, 50603 Kuala Lumpur, Malaysia*
+  - <sup>1</sup> *Department of Management, Faculty of Economics and Business, Universitas Hasanuddin, Makassar 90245, Indonesia*
+  - <sup>2</sup> *Department of Artificial Intelligence, Faculty of Computer Science and Information Technology, Universiti Malaya, 50603 Kuala Lumpur, Malaysia*
 - **対象会議・採択状況**: **ICBAR 2026 採択決定（Accepted** / IOS Press *FAIA* シリーズ出版）。最終採択原稿は **`v1.2.0`** に対応し、追加の技術解説および FAQ は GitHub 上の **`v1.3.0`** にて公開されています。
 - **目的**: プライバシー保護工学と法解釈論を融合させた「シナリオリスク・セーフハーバー」の数理解析シミュレーションです。
 - **連絡先**: `3588@duck.com`
